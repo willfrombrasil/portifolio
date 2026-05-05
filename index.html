@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Portfolio de William Camargo - Desenvolvedor Web Fullstack, Especialista em Marketing Digital e Inteligência Artificial.">
+    <meta name="author" content="William Camargo">
+    <title>William Camargo | Arquiteto de Software & Marketing Digital</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#3b82f6',
+                            dark: '#020617',
+                            card: '#0f172a',
+                            gold: '#fbbf24'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Icons & Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Custom styles for animations and effects -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #020617;
+            color: #f8fafc;
+        }
+
+        .glass {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6 0%, #2dd4bf 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(45, 212, 191, 0.2) 100%);
+            filter: blur(80px);
+            border-radius: 50%;
+            z-index: -1;
+            animation: move 20s infinite alternate;
+        }
+
+        @keyframes move {
+            from {
+                transform: translate(-10%, -10%);
+            }
+
+            to {
+                transform: translate(20%, 20%);
+            }
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+    </style>
+</head>
+
+<body class="antialiased overflow-x-hidden">
+
+    <!-- Background Blobs -->
+    <div class="blob top-0 -left-20"></div>
+    <div class="blob bottom-0 -right-20" style="animation-delay: -10s;"></div>
+
+    <!-- Header / Nav -->
+    <header class="fixed top-0 w-full z-50 px-4 py-4">
+        <nav class="max-w-7xl mx-auto glass rounded-full px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-brand-blue rounded-lg flex items-center justify-center text-white font-bold">W
+                </div>
+                <span class="font-bold text-lg tracking-tight hidden sm:block">William Camargo</span>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <ul class="hidden md:flex gap-6 text-sm font-medium text-gray-400">
+                    <li><a href="#about" class="hover:text-white transition-colors">Sobre</a></li>
+                    <li><a href="#expertise" class="hover:text-white transition-colors">Expertise</a></li>
+                    <li><a href="#business"
+                            class="hover:text-white transition-colors text-brand-blue font-bold italic">Grupo 3W</a>
+                    </li>
+                </ul>
+                <div class="h-6 w-[1px] bg-gray-700 hidden md:block"></div>
+                <div class="flex items-center gap-4">
+                    <a href="catalogo.html"
+                        class="flex items-center gap-2 text-sm font-semibold text-brand-gold hover:opacity-80 transition-opacity">
+                        <i class="ph ph-play-circle text-xl"></i> <span class="hidden sm:inline">Aprendizagem</span>
+                    </a>
+                    <a href="roadmap.html"
+                        class="flex items-center gap-2 text-sm font-semibold text-teal-400 hover:opacity-80 transition-opacity">
+                        <i class="ph ph-map-trifold text-xl"></i> <span class="hidden sm:inline">Roadmap</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 px-4 max-w-7xl mx-auto flex flex-col items-center text-center">
+        <div
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8 border border-white/10 text-xs font-semibold text-gray-400 uppercase tracking-widest">
+            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            Disponível para Projetos Estratégicos
+        </div>
+
+        <h1 class="text-5xl md:text-8xl font-extrabold mb-6 tracking-tight leading-none">
+            Arquitetando o Futuro com <br />
+            <span class="gradient-text">Código & Inteligência</span>
+        </h1>
+
+        <p class="text-lg md:text-xl text-gray-400 max-w-3xl mb-10 leading-relaxed">
+            Desenvolvedor Fullstack Sênior e Especialista em Marketing Digital. <br class="hidden md:block" />
+            Transformo complexidade técnica em lucro e escalabilidade através de sistemas personalizados e integração de
+            IA.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+            <a href="#business"
+                class="px-8 py-4 bg-brand-blue text-white rounded-2xl font-bold btn-glow transition-all hover:scale-105 flex items-center gap-2">
+                <i class="ph ph-lightning-fill"></i> Iniciar meu Projeto
+            </a>
+            <div class="flex gap-2">
+                <a href="https://github.com/willfrombrasil" target="_blank"
+                    class="p-4 glass rounded-2xl hover:text-brand-blue transition-colors border border-white/5">
+                    <i class="ph-bold ph-github-logo text-2xl"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/william-camargo-dev/" target="_blank"
+                    class="p-4 glass rounded-2xl hover:text-brand-blue transition-colors border border-white/5">
+                    <i class="ph-bold ph-linkedin-logo text-2xl"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Tech Badges -->
+        <div
+            class="mt-16 flex flex-wrap justify-center gap-4 max-w-5xl opacity-70 grayscale hover:grayscale-0 transition-all duration-700">
+            <!-- Backend -->
+            <span
+                class="flex items-center gap-2 px-4 py-2 glass rounded-xl text-xs font-bold border border-white/5 hover:border-brand-blue/30 transition-all">
+                <i class="ph ph-php-reveal text-brand-blue"></i> PHP 8.5+ / Laravel 12+
+            </span>
+            <span
+                class="flex items-center gap-2 px-4 py-2 glass rounded-xl text-xs font-bold border border-white/5 hover:border-brand-blue/30 transition-all">
+                <i class="ph ph-node-js text-green-500"></i> Node.js / Express
+            </span>
+            <span
+                class="flex items-center gap-2 px-4 py-2 glass rounded-xl text-xs font-bold border border-white/5 hover:border-brand-blue/30 transition-all">
+                <i class="ph ph-file-py text-blue-400"></i> Python / Fast API
+            </span>
+
+            <!-- Frontend -->
+            <span
+                class="flex items-center gap-2 px-4 py-2 glass rounded-xl text-xs font-bold border border-white/5 hover:border-brand-blue/30 transition-all">
+                <i class="ph ph-file-vue text-emerald-400"></i> Vue.js 3 / Nuxt 3
+            </span>
+            <span
+                class="flex items-center gap-2 px-4 py-2 glass rounded-xl text-xs font-bold border border-white/5 hover:border-brand-blue/30 transition-all">
+                <i class="ph ph-atom text-cyan-400"></i> React / Next.js
+            </span>
+            <span
+                class="flex items-center gap-2 px-4 py-2 glass rounded-xl text-xs font-bold border border-white/5 hover:border-brand-blue/30 transition-all">
+                <i class="ph ph-paint-brush-broad text-sky-400"></i> Tailwind CSS / Bootstrap
+            </span>
+
+            <!-- Database & Infra -->
+            <span
+                class="flex items-center gap-2 px-4 py-2 glass rounded-xl text-xs font-bold border border-white/5 hover:border-brand-blue/30 transition-all">
+                <i class="ph ph-database text-orange-400"></i> MySQL / PostgreSQL
+            </span>
+            <span
+                class="flex items-center gap-2 px-4 py-2 glass rounded-xl text-xs font-bold border border-white/5 hover:border-brand-blue/30 transition-all">
+                <i class="ph ph-stack text-yellow-400"></i> MongoDB / Redis
+            </span>
+            <span
+                class="flex items-center gap-2 px-4 py-2 glass rounded-xl text-xs font-bold border border-white/5 hover:border-brand-blue/30 transition-all">
+                <i class="ph ph-docker-logo text-blue-500"></i> Docker / DevOps
+            </span>
+            <span
+                class="flex items-center gap-2 px-4 py-2 glass rounded-xl text-xs font-bold border border-white/5 hover:border-brand-blue/30 transition-all">
+                <i class="ph ph-cloud text-brand-blue"></i> AWS / Google Cloud
+            </span>
+
+            <!-- IA & Marketing -->
+            <span
+                class="flex items-center gap-2 px-4 py-2 glass rounded-xl text-xs font-bold border border-white/5 hover:border-brand-blue/30 transition-all">
+                <i class="ph ph-brain text-purple-400"></i> AI / LLM Integration
+            </span>
+            <span
+                class="flex items-center gap-2 px-4 py-2 glass rounded-xl text-xs font-bold border border-white/5 hover:border-brand-blue/30 transition-all">
+                <i class="ph ph-chart-line text-pink-400"></i> Google Analytics 4
+            </span>
+            <span
+                class="flex items-center gap-2 px-4 py-2 glass rounded-xl text-xs font-bold border border-white/5 hover:border-brand-blue/30 transition-all">
+                <i class="ph ph-funnel text-indigo-400"></i> CRM / Funnels
+            </span>
+            <span
+                class="flex items-center gap-2 px-4 py-2 glass rounded-xl text-xs font-bold border border-white/5 hover:border-brand-blue/30 transition-all">
+                <i class="ph ph-wordpress-logo text-blue-400"></i> WordPress / Headless
+            </span>
+
+            <!-- Tools -->
+            <span
+                class="flex items-center gap-2 px-4 py-2 glass rounded-xl text-xs font-bold border border-white/5 hover:border-brand-blue/30 transition-all">
+                <i class="ph ph-git-branch text-orange-500"></i> Git / GitHub Actions
+            </span>
+            <span
+                class="flex items-center gap-2 px-4 py-2 glass rounded-xl text-xs font-bold border border-white/5 hover:border-brand-blue/30 transition-all">
+                <i class="ph ph-api text-green-400"></i> RESTful APIs
+            </span>
+        </div>
+    </section>
+
+    <!-- Expertise Section -->
+    <section id="expertise" class="py-20 px-4 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Fullstack -->
+            <div class="p-8 glass rounded-3xl border border-white/5 card-hover transition-all">
+                <div
+                    class="w-12 h-12 bg-brand-blue/20 rounded-2xl flex items-center justify-center text-brand-blue mb-6">
+                    <i class="ph-bold ph-code text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-4">Engenharia Fullstack</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    Sistemas robustos de ponta a ponta. Do backend performático em PHP/Laravel ao frontend reativo e
+                    intuitivo. Foco em arquitetura limpa e escalabilidade.
+                </p>
+            </div>
+
+            <!-- Marketing -->
+            <div class="p-8 glass rounded-3xl border border-white/5 card-hover transition-all">
+                <div class="w-12 h-12 bg-pink-500/20 rounded-2xl flex items-center justify-center text-pink-500 mb-6">
+                    <i class="ph-bold ph-megaphone text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-4">Marketing Digital</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    Não desenvolvo apenas código, desenvolvo resultados. Expertise em SEO técnico, funis de conversão e
+                    estratégias publicitárias que geram ROI real.
+                </p>
+            </div>
+
+            <!-- IA -->
+            <div class="p-8 glass rounded-3xl border border-white/5 card-hover transition-all">
+                <div
+                    class="w-12 h-12 bg-purple-500/20 rounded-2xl flex items-center justify-center text-purple-500 mb-6">
+                    <i class="ph-bold ph-brain text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-4">Inteligência Artificial</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    Integração de LLMs e automação inteligente. Aplico IA para otimizar fluxos de trabalho, analisar
+                    dados e criar interfaces de usuário preditivas.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-brand-dark/50 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row gap-16 items-center">
+            <div class="md:w-1/2">
+                <h2 class="text-3xl md:text-5xl font-bold mb-8">Fusão de Criatividade e <br /><span
+                        class="text-brand-blue">Excelência Técnica</span></h2>
+                <div class="space-y-6 text-gray-400 leading-relaxed">
+                    <p>
+                        Sou o <strong>William Camargo</strong>, um profissional que não aceita o "padrão". Minha
+                        trajetória é marcada pela intersecção entre a lógica rigorosa da programação e a visão
+                        estratégica do marketing.
+                    </p>
+                    <p>
+                        Com domínio em stacks modernas como <strong>PHP (Laravel, Symfony), Node.js, Vue.js e
+                            Python</strong>, foco em criar ferramentas que não apenas funcionam, mas que escalam
+                        negócios. Minha missão é entregar soluções onde a IA e a automação trabalham a favor do
+                        crescimento.
+                    </p>
+                    <div class="flex gap-8 mt-10">
+                        <div>
+                            <span class="block text-white text-2xl font-bold">+50</span>
+                            <span class="text-xs uppercase tracking-widest font-bold text-gray-500">Projetos
+                                Entregues</span>
+                        </div>
+                        <div>
+                            <span class="block text-white text-2xl font-bold">+8 Anos</span>
+                            <span class="text-xs uppercase tracking-widest font-bold text-gray-500">No Ecossistema
+                                Dev</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="md:w-1/2 grid grid-cols-2 gap-4">
+                <div class="space-y-4">
+                    <div
+                        class="aspect-square glass rounded-3xl border border-white/5 flex flex-col items-center justify-center p-6 text-center hover:bg-brand-blue/5 transition-colors">
+                        <i class="ph ph-rocket-launch text-4xl text-brand-blue mb-4"></i>
+                        <span class="text-xs font-bold text-white">Alta Performance</span>
+                    </div>
+                    <div
+                        class="aspect-square glass rounded-3xl border border-white/5 flex flex-col items-center justify-center p-6 text-center hover:bg-teal-400/5 transition-colors">
+                        <i class="ph ph-chart-line-up text-4xl text-teal-400 mb-4"></i>
+                        <span class="text-xs font-bold text-white">Foco em ROI</span>
+                    </div>
+                </div>
+                <div class="space-y-4 mt-8">
+                    <div
+                        class="aspect-square glass rounded-3xl border border-white/5 flex flex-col items-center justify-center p-6 text-center hover:bg-brand-gold/5 transition-colors">
+                        <i class="ph ph-shield-check text-4xl text-brand-gold mb-4"></i>
+                        <span class="text-xs font-bold text-white">Segurança & Robustez</span>
+                    </div>
+                    <div
+                        class="aspect-square glass rounded-3xl border border-white/5 flex flex-col items-center justify-center p-6 text-center hover:bg-purple-500/5 transition-colors">
+                        <i class="ph ph-robot text-4xl text-purple-500 mb-4"></i>
+                        <span class="text-xs font-bold text-white">AI Driven</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Business Section / Grupo 3W Online -->
+    <section id="business" class="py-24 px-4 overflow-hidden relative">
+        <div
+            class="max-w-4xl mx-auto glass rounded-[40px] p-8 md:p-16 border-2 border-brand-blue/30 relative z-10 text-center">
+            <h4 class="text-brand-blue font-bold tracking-[0.2em] uppercase text-sm mb-6">Potencialize seu Negócio</h4>
+            <h2 class="text-4xl md:text-6xl font-black mb-8 leading-tight">Precisa de um Sistema que <br /><span
+                    class="text-brand-blue">Realmente Funciona?</span></h2>
+
+            <p class="text-xl text-gray-300 mb-12 leading-relaxed">
+                No <strong>Grupo 3W Online</strong>, não fazemos apenas sites. Desenvolvemos ecossistemas digitais sob
+                medida: de CRMs complexos a integrações inteligentes de IA. Sistemas estáveis, seguros e desenhados para
+                alta conversão.
+            </p>
+
+            <a href="https://www.3wonline.com.br" target="_blank"
+                class="inline-flex items-center gap-4 px-10 py-5 bg-white text-brand-dark rounded-full font-black text-xl hover:scale-105 transition-all btn-glow shadow-2xl">
+                Contratar Projeto Customizado <i class="ph-bold ph-arrow-right"></i>
+            </a>
+
+            <div class="mt-12 flex flex-wrap justify-center gap-6 text-gray-500 text-sm">
+                <span class="flex items-center gap-2"><i class="ph ph-check-circle-fill text-brand-blue"></i> Sites
+                    Premium</span>
+                <span class="flex items-center gap-2"><i class="ph ph-check-circle-fill text-brand-blue"></i> Sistemas
+                    sob Demanda</span>
+                <span class="flex items-center gap-2"><i class="ph ph-check-circle-fill text-brand-blue"></i>
+                    Consultoria de Marketing</span>
+            </div>
+        </div>
+        <!-- Absolute Decorative -->
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-64 bg-brand-blue/10 -rotate-6 -z-10 blur-3xl">
+        </div>
+    </section>
+
+    <!-- Final Footer -->
+    <footer class="py-20 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div>
+                <span class="font-bold text-2xl tracking-tighter">WILLIAM<span
+                        class="text-brand-blue">CAMARGO</span></span>
+                <p class="text-gray-500 text-sm mt-2">Engenharia de Software & Estratégia Digital.</p>
+            </div>
+
+            <div class="flex gap-6">
+                <a href="https://github.com/willfrombrasil" class="text-gray-500 hover:text-white transition-colors"><i
+                        class="ph ph-github-logo text-3xl"></i></a>
+                <a href="https://www.linkedin.com/in/william-camargo-dev/"
+                    class="text-gray-500 hover:text-white transition-colors"><i
+                        class="ph ph-linkedin-logo text-3xl"></i></a>
+            </div>
+        </div>
+        <div
+            class="max-w-7xl mx-auto px-4 mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-600 gap-4">
+            <p>© 2026 William Camargo | hotwyl. Todos os direitos reservados.</p>
+            <div class="flex gap-6">
+                <a href="catalogo.html" class="hover:text-white">Catálogo Aprendizado</a>
+                <a href="roadmap.html" class="hover:text-white">Trilhas Dev</a>
+                <a href="https://www.3wonline.com.br" class="hover:text-brand-blue font-bold">Grupo 3W Online</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Smooth reveal or interactions could be added here
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

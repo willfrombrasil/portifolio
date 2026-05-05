@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DevRoadmap - Trilha de Aprendizagem para Desenvolvedores de Alto Nível.">
+    <title>DevRoadmap | Trilha de Aprendizagem</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#10b981',
+                        darkBg: '#0f172a',
+                        darkCard: '#1e293b'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- FontAwesome Icons (SVG injectados via CSS/HTML para performance) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+
+        /* Tooltip personalizado */
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            background-color: #1f2937;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 10px;
+            position: absolute;
+            z-index: 50;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .tooltip .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #1f2937 transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Glassmorphism utilities */
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            transition: background-color 0.3s, color 0.3s;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-gray-50 text-gray-900 dark:bg-darkBg dark:text-gray-100 font-sans min-h-screen flex flex-col antialiased">
+
+    <!-- Header Navigation -->
+    <header
+        class="sticky top-0 z-40 w-full backdrop-blur-md bg-white/80 dark:bg-darkBg/80 border-b border-gray-200 dark:border-gray-800 shadow-sm transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <!-- Logo -->
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-code text-primary text-2xl"></i>
+                    <span class="font-bold text-xl tracking-tight">Dev<span class="text-primary">Roadmap</span></span>
+                </div>
+
+                <!-- Ações do Topo -->
+                <div class="flex items-center gap-4">
+                    <!-- Home -->
+                    <a href="index.html"
+                        class="tooltip text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors">
+                        <i class="fa-solid fa-home text-xl"></i> Portfolio
+                        <span class="tooltip-text">Portfolio</span>
+                    </a>
+
+                    <!-- link catalogo -->
+                    <a href="catalogo.html"
+                        class="tooltip text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors">
+                        <i class="fa-solid fa-box-open text-xl"></i> Aprendizagem
+                        <span class="tooltip-text">Aprendizagem</span>
+                    </a>
+
+                    <!-- Formulário com autocomplete OFF conforme diretriz -->
+                    <form onsubmit="event.preventDefault(); searchRoadmap();" class="hidden md:block relative">
+                        <input type="text" id="searchInput" autocomplete="off" placeholder="Pesquisar módulo..."
+                            class="bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm rounded-full focus:ring-primary focus:border-primary block w-full pl-10 p-2 transition-colors">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <i class="fa-solid fa-magnifying-glass text-gray-500"></i>
+                        </div>
+                    </form>
+
+                    <!-- Botão de Ajuda (Tooltip + SweetAlert) -->
+                    <button onclick="showHelp()"
+                        class="tooltip text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors">
+                        <i class="fa-solid fa-circle-question text-xl"></i>
+                        <span class="tooltip-text">Precisa de ajuda?</span>
+                    </button>
+
+                    <!-- Dark Mode Toggle -->
+                    <button id="themeToggle"
+                        class="tooltip text-gray-500 hover:text-yellow-500 dark:text-gray-400 dark:hover:text-yellow-400 transition-colors">
+                        <i class="fa-solid fa-moon text-xl" id="themeIcon"></i>
+                        <span class="tooltip-text">Alternar Tema</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row gap-8">
+
+        <!-- Sidebar / Navigation -->
+        <aside class="md:w-64 flex-shrink-0">
+            <div class="sticky top-24">
+                <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Trilhas Disponíveis</h3>
+                <nav class="space-y-2" id="sidebarMenu">
+                    <!-- Gerado dinamicamente via JS -->
+                </nav>
+
+                <div
+                    class="mt-8 p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800">
+                    <h4 class="text-sm font-bold text-blue-800 dark:text-blue-300 mb-2"><i
+                            class="fa-solid fa-lightbulb mr-2"></i>Dica do Dev Cria</h4>
+                    <p class="text-xs text-blue-600 dark:text-blue-400">
+                        Não pule etapas. A arquitetura de software de alto nível exige fundamentos sólidos em Vanilla JS
+                        e PHP moderno (v8.x).
+                    </p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Content Area -->
+        <section class="flex-grow min-w-0" id="contentArea">
+            <!-- Título da Trilha Atual -->
+            <div class="mb-8 border-b border-gray-200 dark:border-gray-700 pb-4">
+                <h1 id="trailTitle" class="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
+                    Selecione uma trilha
+                </h1>
+                <p id="trailDesc" class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
+                    Carregando dados arquiteturais...
+                </p>
+            </div>
+
+            <!-- Lista de Fases (Cards) -->
+            <div id="phasesContainer" class="space-y-6">
+                <!-- Gerado dinamicamente via JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- LGPD Banner -->
+    <div id="lgpdBanner"
+        class="fixed bottom-0 left-0 right-0 glass shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.1)] z-50 transform translate-y-full transition-transform duration-500 ease-in-out">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p class="text-sm text-gray-300">
+                <i class="fa-solid fa-shield-halved text-secondary mr-2"></i>
+                <strong>Aviso LGPD:</strong> Utilizamos cookies e armazenamento local para melhorar sua experiência,
+                como salvar sua preferência de tema (Dark Mode). Ao continuar, você concorda com nossa política.
+            </p>
+            <button onclick="acceptLGPD()"
+                class="whitespace-nowrap px-6 py-2 bg-primary hover:bg-blue-600 text-white rounded-lg font-medium transition-colors text-sm shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-darkBg">
+                Entendi e Aceito
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer exigido -->
+    <footer
+        class="mt-auto py-6 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-darkBg transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-sm font-semibold text-gray-500 dark:text-gray-400">
+                Sistema desenvolvido pelo desenvolvedor HOTWYL | WILLFROMBRASIL
+            </p>
+        </div>
+    </footer>
+
+    <!-- Core Application Logic (JS) -->
+    <script>
+
+        const roadmapData = {
+            html: {
+                title: "Roadmap — HTML (Estrutura e Semântica)",
+                desc: "A base estrutural de toda a web moderna.",
+                icon: "fa-brands fa-html5 text-orange-500",
+                docs: [
+                    { name: "🌐 MDN Web Docs", url: "https://developer.mozilla.org/pt-BR/docs/Web/HTML" },
+                    { name: "🔹 WHATWG Spec", url: "https://html.spec.whatwg.org/" },
+                    { name: "🔹 W3C HTML5", url: "https://www.w3.org/TR/html52/" },
+                    { name: "🔹 W3Schools", url: "https://www.w3schools.com/html/" }
+                ],
+                phases: [
+                    {
+                        num: 1, title: "Fundamentos e Estrutura",
+                        topics: ["Doctype", "Tags html, head, body", "Metadados essenciais", "Títulos (H1-H6)", "Parágrafos", "Listas (UL, OL, LI)", "Links (A)", "Imagens (IMG)", "Atributos globais", "Comentários"],
+                        practice: ["Página de perfil", "Lista de tarefas HTML", "Galeria de fotos simples", "Navegação entre arquivos", "Estrutura de artigo"],
+                        projects: ["Mini Blog Estático", "Landing Page de Links", "Currículo Web Semântico"],
+                        challenges: ["Validar no W3C", "Usar caminhos relativos", "Otimizar nomes de imagens"]
+                    },
+                    {
+                        num: 2, title: "Semântica Avançada",
+                        topics: ["Header e Footer", "Main e Section", "Article e Aside", "Nav e Menu", "Figure e Figcaption", "Time e Address", "Details e Summary", "Mark e Abbr", "Hierarquia de conteúdo", "Benefícios do SEO"],
+                        practice: ["Refatore site antigo", "Estruturar layout de notícias", "Criar sidebar semântica", "Implementar FAQ nativo", "Rodapé informativo"],
+                        projects: ["Portal de Notícias", "Wiki Pessoal", "Estrutura de Documentação"],
+                        challenges: ["Zero divs no layout", "Acessibilidade estrutural", "Semântica 100%"]
+                    },
+                    {
+                        num: 3, title: "Formulários e Validação",
+                        topics: ["Form e Action", "Input Types (text, email, tel)", "Textarea e Select", "Label e Fieldset", "Datalist", "Required e Pattern", "Placeholder e Value", "Min/Max/Step", "Input Color/Date/Range", "Botões de submissão"],
+                        practice: ["Formulário de contato", "Cadastro de usuários", "Pesquisa de satisfação", "Seletor de data e hora", "Filtros de busca"],
+                        projects: ["Sistema de Checkout (UI)", "Formulário de Candidatura", "Pesquisa Interativa"],
+                        challenges: ["Validação sem JS", "Formulário Multi-step HTML", "Acessibilidade em forms"]
+                    },
+                    {
+                        num: 4, title: "Multimídia e Gráficos",
+                        topics: ["Video (source, track)", "Audio", "Embed e Iframe", "Picture e Source", "Lazy Loading nativo", "SVG Inline vs Ext", "Canvas basics", "Object tag", "Legendas VTT", "Autoplay e Muted"],
+                        practice: ["Player de vídeo custom", "Podcast player UI", "Mapa em iframe", "SVG animado básico", "Galeria responsiva"],
+                        projects: ["Plataforma de Vídeos", "Portfólio de Ilustrador", "Landing Page Multimídia"],
+                        challenges: ["Otimização de Assets", "Fallback para navegadores", "SVG interativo"]
+                    },
+                    {
+                        num: 5, title: "SEO Técnico e Metadados",
+                        topics: ["Viewport meta", "Charset UTF-8", "Robots.txt meta", "Open Graph (FB/WA)", "Twitter Cards", "JSON-LD basics", "Favicons", "Canonical tags", "Language attributes", "Preload/Prefetch"],
+                        practice: ["Configurar Social Cards", "Implementar Favicons", "Adicionar Canonical URLs", "Estruturar Schemas", "Meta tags de segurança"],
+                        projects: ["Site SEO Optimized", "Blog Engine Metadata", "Cartão de Visitas Digital"],
+                        challenges: ["Score 100 no Lighthouse", "Rich Snippets válidos", "Indexação perfeita"]
+                    },
+                    {
+                        num: 6, title: "Acessibilidade (A11Y)",
+                        topics: ["ARIA Roles", "ARIA Attributes", "Tabindex", "Alt text descritivo", "Contrast awareness", "Landmarks", "Hidden content", "Live regions", "Focus management", "Screen readers test"],
+                        practice: ["Tornar modal acessível", "Menu mobile via teclado", "Skip to main content", "Labels invisíveis", "Tabelas acessíveis"],
+                        projects: ["Dashboard Acessível", "E-commerce Inclusivo", "Governo Style Guide"],
+                        challenges: ["Aprovação no WAVE", "Navegação cega completa", "WCAG 2.1 Compliance"]
+                    },
+                    {
+                        num: 7, title: "Otimização de Performance",
+                        topics: ["Critical Path HTML", "Minificação", "Compression hints", "Resource hints", "Dom size control", "Reflow/Repaint HTML", "Scripts Async/Defer", "Font Loading", "Image Decode", "Cache headers"],
+                        practice: ["Otimizar DOM pesado", "Configurar defer em scripts", "Implementar critical CSS", "Reduzir nós de árvore", "Lazy load de vídeos"],
+                        projects: ["Site Ultra Rápido", "Performance Audit App", "Lite Version Site"],
+                        challenges: ["FCP < 1s", "DOM < 1500 nodes", "Mobile Speed Score 95+"]
+                    },
+                    {
+                        num: 8, title: "Web Components",
+                        topics: ["Custom Elements", "Shadow DOM", "HTML Templates", "Slots", "Styling components", "Lifecycle hooks", "Attributes vs Props", "Events in Shadow", "Component modularization", "Interop with JS"],
+                        practice: ["Criar botão customizado", "Input auto-completar", "Card reutilizável", "Navbar component", "Footer modular"],
+                        projects: ["Design System Core", "Biblioteca de Widgets", "Micro-frontend UI"],
+                        challenges: ["No framework components", "Shadow DOM encap", "Universal Export"]
+                    },
+                    {
+                        num: 9, title: "HTML5 APIs e Browser",
+                        topics: ["Geolocalização", "Web Storage (Local/Session)", "Drag and Drop", "History API", "Web Workers basics", "Canvas Drawing", "Web Notifications", "Battery Status", "Device Orientation", "File API"],
+                        practice: ["Salvar nome no LocalStorage", "Pegar coords GPS", "Arrastar itens em lista", "Notificação push UI", "Leitor de arquivos"],
+                        projects: ["App de Notas Local", "Mapa de Localização", "Editor de Desenho Canvas"],
+                        challenges: ["Offline Support", "Complex Drag-Drop", "History Navigation"]
+                    },
+                    {
+                        num: 10, title: "Arquitetura e Documentação",
+                        topics: ["Padrões de nomenclatura", "Documentação de código", "Microfrontends strategy", "Static Site Generators", "Server Side Rendering", "HTML Emails", "AMP basics", "PWA Manifest", "Security (CSP)", "Future of HTML"],
+                        practice: ["Gerar docs via JSDoc/HTML", "Criar template de email", "Configurar manifest PWA", "Implementar CSP", "Modularizar HTML"],
+                        projects: ["Plataforma SaaS Architecture", "Email Marketing Suite", "Documentação Técnica Oficial"],
+                        challenges: ["Arquitetura Escalável", "Segurança Máxima", "PWA 100% Score"]
+                    }
+                ]
+            },
+            css: {
+                title: "Roadmap — CSS (Estilização e Layout)",
+                desc: "Domine o design visual e a experiência do usuário.",
+                icon: "fa-brands fa-css3-alt text-blue-500",
+                docs: [
+                    { name: "🌐 MDN Web Docs", url: "https://developer.mozilla.org/pt-BR/docs/Web/CSS" },
+                    { name: "🔹 W3C CSS", url: "https://www.w3.org/Style/CSS/" },
+                    { name: "🔹 CSS-Tricks", url: "https://css-tricks.com/" },
+                    { name: "🔹 Smashing Magazine", url: "https://www.smashingmagazine.com/category/css/" },
+                    { name: "🔹 BEM Guide", url: "https://getbem.com/" },
+                    { name: "🔹 Bootstrap", url: "https://getbootstrap.com/docs/" },
+                    { name: "🔹 Tailwind CSS", url: "https://tailwindcss.com/docs" }
+                ],
+                phases: [
+                    {
+                        num: 1, title: "Seletores e Box Model",
+                        topics: ["Seletores Básicos", "Box Model (Margin, Border, Padding)", "Content-box vs Border-box", "Display (Block, Inline)", "Cores (RGB, HEX, HSL)", "Tipografia básica", "Reset CSS", "Specificity", "Inheritance", "Cascading"],
+                        practice: ["Estilizar parágrafos", "Criar box colorido", "Alinhamento simples", "Botão customizado", "Resetar página"],
+                        projects: ["Cartão de Perfil", "Landing Page Hero", "Menu Simples"],
+                        challenges: ["Centralizar Div", "Specificity Master", "Box Model Perfect"]
+                    },
+                    {
+                        num: 2, title: "Flexbox: Layout Moderno",
+                        topics: ["Flex Container", "Flex Direction", "Justify Content", "Align Items", "Flex Wrap", "Flex Grow/Shrink", "Flex Basis", "Order", "Gap", "Nested Flex"],
+                        practice: ["Barra de navegação", "Galeria flexível", "Centralização total", "Sidebar responsiva", "Footer alinhado"],
+                        projects: ["Header de E-commerce", "Layout de Dashboard", "Grade de Preços"],
+                        challenges: ["Layout Santo Graal", "Flexbox Holy Grail", "Sticky Footer"]
+                    },
+                    {
+                        num: 3, title: "CSS Grid: Estruturas Complexas",
+                        topics: ["Grid Container", "Grid Template Columns/Rows", "Grid Template Areas", "Grid Gap", "Repeat and MinMax", "Auto-fill vs Auto-fit", "Grid Alignment", "Implicit vs Explicit Grid", "Grid Item Placement", "Subgrid basics"],
+                        practice: ["Grade de notícias", "Layout de portfólio", "Calendário visual", "Mesa de fotos", "Página de blog"],
+                        projects: ["Portal de Notícias Grid", "Dashboard Financeiro", "Galeria Artística"],
+                        challenges: ["Responsive Grid no-media", "Áreas Complexas", "Grid Animado"]
+                    },
+                    {
+                        num: 4, title: "Responsividade e Mobile First",
+                        topics: ["Media Queries", "Breakpoints", "Mobile First Strategy", "Viewport units (vw, vh)", "Relative units (em, rem)", "Clamp(), Min(), Max()", "Aspect Ratio", "Responsive Images", "Landscape vs Portrait", "Dark Mode queries"],
+                        practice: ["Site para celulares", "Menu hamburguer CSS", "Tipografia responsiva", "Seções empilháveis", "Ajuste de margens"],
+                        projects: ["Site Institucional 100% Resp", "App Mobile UI", "Blog Multi-dispositivo"],
+                        challenges: ["No Breakpoints Layout", "Fluidez Perfeita", "Dark/Light Auto"]
+                    },
+                    {
+                        num: 5, title: "Variáveis e Funções CSS",
+                        topics: ["Custom Properties (--var)", "Calc() function", "Color functions", "Env() variables", "Attribute functions", "Counter functions", "Shadows complexas", "Gradients avançados", "Clip-path", "Masking"],
+                        practice: ["Tema dinâmico", "Calculadora de grid", "Botão com gradiente", "Formas geométricas", "Sombra de profundidade"],
+                        projects: ["Design System Tokens", "Gerador de Temas", "Landing Page Futurista"],
+                        challenges: ["Modo Noturno via CSS", "Layout Matemático", "Formas SVG via CSS"]
+                    },
+                    {
+                        num: 6, title: "Animações e Transições",
+                        topics: ["Transitions", "Keyframes", "Animation properties", "Timing functions", "Will-change", "Staggered animations", "Motion Path", "Scroll-driven animations", "Hover effects", "Micro-interactions"],
+                        practice: ["Botão pulsante", "Loader infinito", "Menu deslizante", "Card que flutua", "Texto animado"],
+                        projects: ["Página de Captura Animada", "Galeria 3D", "Interface Gamificada"],
+                        challenges: ["60 FPS Animation", "Interação Complexa", "Performance de Animação"]
+                    },
+                    {
+                        num: 7, title: "Metodologias e Organização",
+                        topics: ["BEM (Block Element Modifier)", "SMACSS", "OOCSS", "CSS Modules", "ITCSS", "Sass/SCSS basics", "PostCSS", "Naming conventions", "File structure", "Refactoring CSS"],
+                        practice: ["Refatorar para BEM", "Estruturar arquivos CSS", "Criar mixins Sass", "Variáveis Sass", "Nesting"],
+                        projects: ["Library de UI Components", "Framework CSS Próprio", "Site Escalável"],
+                        challenges: ["Zero Especificidade", "Código Limpo", "DRY CSS"]
+                    },
+                    {
+                        num: 8, title: "Tailwind CSS e Utilitários",
+                        topics: ["Utility-First workflow", "Tailwind Config", "JIT Mode", "Directives (@apply)", "Typography plugin", "Forms plugin", "Aspect-ratio plugin", "Custom themes", "Plugins dev", "Build optimization"],
+                        practice: ["Card com Tailwind", "Layout completo utility", "Tema customizado", "Responsividade Tailwind", "Dark mode Tailwind"],
+                        projects: ["SaaS Dashboard", "Clone de Site Famoso", "Admin Panel"],
+                        challenges: ["Configuração Avançada", "Extensão de Plugins", "PurgeCSS Audit"]
+                    },
+                    {
+                        num: 9, title: "Arquitetura e Design Systems",
+                        topics: ["Component Driven Design", "Pattern Libraries", "Style Guides", "CSS-in-JS intro", "Scoped CSS", "Global vs Local", "Theming systems", "Accessibility in CSS", "Documentation", "Consistency"],
+                        practice: ["Criar guia de estilos", "Componente agnóstico", "Sistema de cores", "Tipografia consistente", "Tokens de design"],
+                        projects: ["Corporate Design System", "Component Library", "Storybook CSS"],
+                        challenges: ["Arquitetura Atômica", "Consistência Visual", "Documentação Viva"]
+                    },
+                    {
+                        num: 10, title: "Performance e Critical CSS",
+                        topics: ["Critical CSS extraction", "Unused CSS removal", "Loading strategies", "Render blocking CSS", "GPU acceleration", "Contain property", "Layers (@layer)", "CSS Paint API", "Web Components Styling", "Future CSS (Houdini)"],
+                        practice: ["Audit de CSS não usado", "Otimizar tempo de render", "Implementar @layer", "Usar contain", "Critical path CSS"],
+                        projects: ["Site Ultra Performance", "Analytics Tool UI", "Experimental UI Houdini"],
+                        challenges: ["First Paint < 500ms", "Zero Layout Shift", "Next-gen CSS"]
+                    }
+                ]
+            },
+            js: {
+                title: "Roadmap — JavaScript (Lógica e Dinâmica)",
+                desc: "O motor da web moderna e interatividade.",
+                icon: "fa-brands fa-square-js text-yellow-400",
+                docs: [
+                    { name: "⚡ MDN Web Docs", url: "https://developer.mozilla.org/pt-BR/docs/Web/JavaScript" },
+                    { name: "🔹 JavaScript.info", url: "https://javascript.info/" },
+                    { name: "🔹 ECMA International", url: "https://tc39.es/ecma262/" },
+                    { name: "🔹 freeCodeCamp", url: "https://www.freecodecamp.org/learn/" },
+                    { name: "🔹 Node.js", url: "https://nodejs.org/en/docs" },
+                    { name: "🔹 npm", url: "https://docs.npmjs.com/" },
+                    { name: "🔹 Jest Docs", url: "https://jestjs.io/docs/getting-started" },
+                    { name: "🔹 Fetch API", url: "https://developer.mozilla.org/pt-BR/docs/Web/API/Fetch_API" }
+                ],
+                phases: [
+                    {
+                        num: 1, title: "Lógica e Sintaxe",
+                        topics: ["Variáveis (let, const)", "Tipos Primitivos", "Operadores Aritméticos", "Operadores Lógicos", "Condicionais (if, switch)", "Loops (for, while)", "Arrays básicos", "Funções simples", "Template Strings", "Conversão de tipos"],
+                        practice: ["Calculadora", "Par ou ímpar", "Conversor de medidas", "Lista de nomes", "Média de notas"],
+                        projects: ["Gerador de Recibos", "Simulador de Financiamento", "Quiz de Lógica"],
+                        challenges: ["Algoritmo de Troco", "Fatorial recursivo", "Validador de senha"]
+                    },
+                    {
+                        num: 2, title: "Funções e Escopo",
+                        topics: ["Arrow Functions", "Parâmetros Default", "Escopo (Global, Local, Bloco)", "Hoisting", "Closures", "Callbacks", "Recursão", "IIFE", "Higher Order Functions", "Pure Functions"],
+                        practice: ["Função que soma array", "Filtro de strings", "Contador com closure", "Timer simples", "Mapear objetos"],
+                        projects: ["Gerenciador de Estoque", "App de Cronômetro", "Sorteador de Prêmios"],
+                        challenges: ["Debounce manual", "Currying function", "Deep equality check"]
+                    },
+                    {
+                        num: 3, title: "Arrays e Objetos (ES6+)",
+                        topics: ["Destructuring", "Spread/Rest Operator", "Map, Filter, Reduce", "Find, Some, Every", "Object Literals", "Object Methods (keys, values)", "Array methods (splice, slice)", "Set and Map", "JSON manipulation", "Immutability basics"],
+                        practice: ["Remover duplicados", "Total de compras", "Agrupar por categoria", "Transformar dados API", "Merge de objetos"],
+                        projects: ["Carrinho de Compras", "Filtro de Produtos", "Gerador de Relatórios"],
+                        challenges: ["Reduce Master", "Imutabilidade manual", "Deep Clone"]
+                    },
+                    {
+                        num: 4, title: "DOM e Eventos",
+                        topics: ["QuerySelectors", "Attribute manipulation", "ClassList", "Event Listeners", "Event Bubbling/Capturing", "Event Delegation", "Forms in JS", "Dynamic elements", "Styles in JS", "Dataset"],
+                        practice: ["Mudar cor de fundo", "Toggle Dark Mode", "Validar input real-time", "Modal funcional", "Lista dinâmica"],
+                        projects: ["To-Do List Profissional", "Carrossel de Imagens", "Drag & Drop UI"],
+                        challenges: ["Infinite Scroll", "Custom Context Menu", "Keyboard Shortcuts"]
+                    },
+                    {
+                        num: 5, title: "Assincronismo",
+                        topics: ["Event Loop", "Callbacks hell", "Promises (then, catch, finally)", "Async / Await", "Try/Catch error handling", "Promise.all / race / any", "SetTimeout / Interval", "Microtasks vs Macrotasks", "Aborting requests", "Async Iterators"],
+                        practice: ["Simular delay", "Sequência de promessas", "Tratar erros de API", "Polling simples", "Carregamento paralelo"],
+                        projects: ["Buscador de Filmes", "Pokedex Assíncrona", "App de Câmbio"],
+                        challenges: ["Retry Logic", "Concurrent Requests Limit", "Custom Promise Class"]
+                    },
+                    {
+                        num: 6, title: "APIs e Integração",
+                        topics: ["Fetch API", "Headers e Body", "Authentication (Bearer)", "CORS basics", "Axios basics", "WebSockets intro", "URL Search Params", "Form Data API", "REST methods", "Error handling status"],
+                        practice: ["GET de usuários", "POST de formulário", "Header customizado", "Tratar erro 404", "Upload de arquivo"],
+                        projects: ["Social Media Feed", "Client de Chat", "Admin User Manager"],
+                        challenges: ["Cache de API", "Interceptores manuais", "Offline Sync"]
+                    },
+                    {
+                        num: 7, title: "Orientação a Objetos",
+                        topics: ["Prototypes", "Constructor Functions", "ES6 Classes", "Extends e Super", "Getters e Setters", "Static Methods", "Private fields (#)", "This keyword context", "Bind, Call, Apply", "Encapsulation"],
+                        practice: ["Classe Pessoa/Aluno", "Herança de Animal", "Sistema de Conta Bancária", "Validador de campos", "Manager de estados"],
+                        projects: ["RPG Text-based", "Sistema de Biblioteca", "E-commerce Engine"],
+                        challenges: ["Polimorfismo Real", "Event Emitter", "Dependency Injection"]
+                    },
+                    {
+                        num: 8, title: "Testes Automatizados",
+                        topics: ["Jest basics", "Unit testing", "Mocking functions", "Testing Library", "Assertions", "Test Coverage", "Async testing", "TDD workflow", "Integration tests", "Snapshot testing"],
+                        practice: ["Testar soma", "Mock de API", "Testar componente UI", "Verificar erros", "Coverage 100%"],
+                        projects: ["Unit Test Suite", "TDD Calculator", "Validador Testado"],
+                        challenges: ["Mocking complex modules", "TDD Lifecycle", "Regression Testing"]
+                    },
+                    {
+                        num: 9, title: "TypeScript e Tipagem",
+                        topics: ["Types vs Interfaces", "Generics", "Enums", "Utility Types", "Union and Intersection", "Type Guards", "TS Config", "Classes in TS", "Modules in TS", "Strict mode"],
+                        practice: ["Tipar objetos API", "Criar interface UI", "Função Genérica", "Type Casting", "Enum de Status"],
+                        projects: ["Inventory TS", "Finance Manager TS", "Task API Client"],
+                        challenges: ["Complex Generics", "Type Inference Master", "Strict TS Project"]
+                    },
+                    {
+                        num: 10, title: "Arquitetura e Performance",
+                        topics: ["Clean Code JS", "Design Patterns (Singleton, Factory, Observer)", "Modularização", "Memory Management", "V8 Engine optimization", "Web Workers", "WebAssembly intro", "Refactoring strategies", "Documentation (JSDoc)", "Advanced Debugging"],
+                        practice: ["Refatorar código sujo", "Implementar Observer", "Medir performance", "Detectar Memory Leak", "Documentar API"],
+                        projects: ["Enterprise Architecture", "Performance Dashboard", "Core Library UI"],
+                        challenges: ["Arquitetura de Estado", "Zero Memory Leak", "Performance Audit"]
+                    }
+                ]
+            },
+            php: {
+                title: "Roadmap — PHP 8 (Backend e Arquitetura)",
+                desc: "Construa sistemas robustos, seguros e escaláveis.",
+                icon: "fa-brands fa-php text-indigo-500",
+                docs: [
+                    { name: "🌐 PHP.net Manual", url: "https://www.php.net/manual/pt_BR/" },
+                    { name: "📘 Design Patterns", url: "https://refactoring.guru/design-patterns" },
+                    { name: "📗 PHP the Right Way", url: "https://phptherightway.com/" },
+                    { name: "📏 Padrões PSR", url: "https://www.php-fig.org/psr/" },
+                    { name: "📦 Composer Docs", url: "https://getcomposer.org/doc/" },
+                    { name: "🧪 PHPUnit", url: "https://phpunit.de/documentation.html" },
+                    { name: "💡 Pest PHP", url: "https://pestphp.com/docs" },
+                    { name: "🔹 PHP Sandbox", url: "https://onlinephp.io/" },
+                    { name: "🔹 Teste Api", url: "https://resttesttest.com/" }
+                ],
+                phases: [
+                    {
+                        num: 1, title: "Sintaxe e Tipagem",
+                        topics: ["PHP Tags", "Variáveis e Tipos", "Tipagem Forte (Strict)", "Operadores", "Condicionais", "Loops", "Funções básicas", "Include vs Require", "Match expression", "Novidades PHP 8.x"],
+                        practice: ["Calculadora Backend", "Validador de idade", "Gerador de listas", "Manipulação de data", "Inclusão de templates"],
+                        projects: ["Gerador de Holerite", "Sistema de Notas", "Site Institucional PHP"],
+                        challenges: ["Algoritmo de Fibonacci", "Validador de CPF", "Tipagem Rigorosa"]
+                    },
+                    {
+                        num: 2, title: "Manipulação de Dados",
+                        topics: ["Arrays Associativos", "Funções de Array", "Strings e Regex", "DateTime API", "JSON Encode/Decode", "File System (CRUD)", "Upload de arquivos", "Criptografia básica", "Superglobais ($_GET, $_POST)", "Sanitização"],
+                        practice: ["Filtro de lista", "Manipular CSV", "Sistema de Log em arquivo", "Upload de perfil", "Processar formulário"],
+                        projects: ["Gerenciador de Arquivos", "Sistema de Newsletter", "Blog via Markdown"],
+                        challenges: ["Parser de Log complexo", "Upload with Resize", "Segurança de Dados"]
+                    },
+                    {
+                        num: 3, title: "POO Avançada",
+                        topics: ["Classes e Objetos", "Visibilidade (Public, Private, Protected)", "Herança", "Interfaces", "Abstract Classes", "Traits", "Dependency Injection", "Namespaces", "Autoloading", "Magic Methods"],
+                        practice: ["Modelagem de Loja", "Interface de Pagamento", "Traits de Log", "Injeção de dependência manual", "Autoload PSR-4"],
+                        projects: ["E-commerce Engine", "Sistema Bancário OO", "Library de Validação"],
+                        challenges: ["Arquitetura de Plugins", "Herança Múltipla via Traits", "Injeção Dinâmica"]
+                    },
+                    {
+                        num: 4, title: "Padrões de Projeto",
+                        topics: ["Repository Pattern", "Service Pattern", "Factory Pattern", "Strategy Pattern", "Observer Pattern", "MVC (Model-View-Controller)", "DTO (Data Transfer Objects)", "SOLID Principles", "Clean Architecture intro", "Design Patterns em PHP"],
+                        practice: ["Refatorar CRUD", "Implementar Repository", "Criar Service de Email", "Aplicar SOLID", "Estrutura MVC manual"],
+                        projects: ["Framework MVC Custom", "ERP Core", "API Gateway Pattern"],
+                        challenges: ["SOLID 100% no Projeto", "Refatoração de Legado", "Arquitetura desacoplada"]
+                    },
+                    {
+                        num: 5, title: "Segurança e Proteção",
+                        topics: ["SQL Injection protection", "XSS Prevention", "CSRF Protection", "Password Hashing (Bcrypt)", "Session Security", "Input Validation", "Output Escaping", "CORS PHP", "JWT Basics", "OWASP Top 10 for PHP"],
+                        practice: ["Login Seguro", "Sanitizar comentários", "Token CSRF manual", "Hash de senhas", "Sessões seguras"],
+                        projects: ["Auth System Profissional", "Firewall de Aplicação", "Admin Panel Seguro"],
+                        challenges: ["Pentest manual", "Zero Vulnerabilidades", "Segurança Máxima"]
+                    },
+                    {
+                        num: 6, title: "Composer e Ecossistema",
+                        topics: ["Composer Install/Update", "Packagist", "Autoloading PSR-4", "Versioning (SemVer)", "Dev Dependencies", "Composer Scripts", "Lock file importance", "Custom Packages", "Environmental Variables (.env)", "Config management"],
+                        practice: ["Instalar Guzzle", "Configurar .env", "Criar Script Composer", "Publicar pacote", "Gerenciar versões"],
+                        projects: ["CLI Tool PHP", "Sincronizador de Dados", "Micro-service Base"],
+                        challenges: ["Pacote Privado", "Autoload Complexo", "Otimização de Vendor"]
+                    },
+                    {
+                        num: 7, title: "Testes Automatizados",
+                        topics: ["PHPUnit setup", "Unit Tests", "Integration Tests", "Assertions", "Mocks and Stubs", "Test Driven Development", "Pest PHP intro", "Test Coverage", "Database testing", "CI integration"],
+                        practice: ["Testar calculador", "Mock de Repositório", "Testar API endpoint", "TDD no CRUD", "Coverage report"],
+                        projects: ["Test Suite de Sistema", "Validador TDD", "API Testada"],
+                        challenges: ["Zero Bugs Project", "TDD Lifecycle", "Mutation Testing"]
+                    },
+                    {
+                        num: 8, title: "APIs e Integração",
+                        topics: ["RESTful Standards", "HTTP Methods", "Status Codes", "JSON Response", "Middleware", "Route Management", "Auth API (Bearer/JWT)", "Consumir APIs externas (Guzzle)", "GraphQL intro", "Webhooks"],
+                        practice: ["Criar endpoint JSON", "Middleware de Auth", "Consumir ViaCEP", "Tratar erros HTTP", "Gerenciar Rotas"],
+                        projects: ["API de Marketplace", "Web Scraper API", "Integração de Pagamentos"],
+                        challenges: ["API Versioning", "Rate Limiting", "Documentação Swagger"]
+                    },
+                    {
+                        num: 9, title: "Laravel: O Framework",
+                        topics: ["Artisan CLI", "Routing", "Blade Templates", "Eloquent ORM basics", "Migrations & Seeders", "Controllers", "Requests & Validation", "Service Container", "Middlewares", "Providers"],
+                        practice: ["Criar Crud Laravel", "Migrar DB", "Validar Request", "Template Blade", "Rota Protegida"],
+                        projects: ["Blog Laravel", "Gestor de Tarefas", "Portfolio Manager"],
+                        challenges: ["Laravel Best Practices", "Eloquent Performance", "Zero SQL manual"]
+                    },
+                    {
+                        num: 10, title: "Laravel Avançado",
+                        topics: ["Queues & Jobs", "Events & Listeners", "Policies & Gates", "Broadcast & Echo", "Laravel Echo", "API Resources", "Task Scheduling", "Caching (Redis)", "Testing in Laravel", "Deployment"],
+                        practice: ["Job de Email", "Observer de Model", "Policy de Acesso", "Cache de query", "Testar Feature"],
+                        projects: ["LMS Platform", "SaaS Multi-tenant", "Real-time Chat Laravel"],
+                        challenges: ["Alta Escalabilidade", "Arquitetura Complexa", "Real-time 100%"]
+                    }
+                ]
+            },
+            mysql: {
+                title: "Roadmap — MySQL e Persistência de Dados",
+                desc: "A fundação de dados para aplicações estáveis e velozes.",
+                icon: "fa-solid fa-database text-blue-400",
+                docs: [
+                    { name: "🔹 MySQL Docs", url: "https://dev.mysql.com/doc/" },
+                    { name: "🔹 W3Schools", url: "https://www.w3schools.com/mysql/" },
+                    { name: "🔹 MySQL Tutorial", url: "https://www.mysqltutorial.org/" },
+                    { name: "🔹 phpMyAdmin", url: "https://docs.phpmyadmin.net/" },
+                    { name: "🔹 MariaDB", url: "https://mariadb.com/kb/en/documentation/" },
+                    { name: "🔹 PostgreSQL", url: "https://www.postgresql.org/docs/" },
+                    { name: "🔹 Eloquent ORM", url: "https://laravel.com/docs/eloquent" },
+                    { name: "🔹 Doctrine ORM", url: "https://www.doctrine-project.org/" }
+                ],
+                phases: [
+                    {
+                        num: 1, title: "Modelagem Relacional",
+                        topics: ["Entidades e Atributos", "Relacionamentos (1:1, 1:N, N:N)", "Normalização (1NF, 2NF, 3NF)", "Chaves Primárias (PK)", "Chaves Estrangeiras (FK)", "Diagrama ER", "Tipos de Dados", "Null vs Not Null", "Auto Increment", "Engine (InnoDB)"],
+                        practice: ["Desenhar DB Loja", "Normalizar Planilha", "Definir Tipos", "Criar Diagrama", "Mapear FKs"],
+                        projects: ["Modelagem de E-commerce", "Banco de Escola", "Sistema de Biblioteca"],
+                        challenges: ["3NF Master", "Modelagem Complexa", "Zero Redundância"]
+                    },
+                    {
+                        num: 2, title: "SQL: DDL e DML",
+                        topics: ["CREATE DATABASE/TABLE", "ALTER TABLE", "DROP/TRUNCATE", "INSERT INTO", "UPDATE", "DELETE", "SELECT basics", "WHERE clause", "ORDER BY", "LIMIT"],
+                        practice: ["Criar tabelas", "Popular dados", "Atualizar preços", "Remover inativos", "Listar usuários"],
+                        projects: ["Scripts de Instalação", "Populador de Dados", "Manager de Tabelas"],
+                        challenges: ["Bulk Insert", "SQL sem erros", "DML Seguro"]
+                    },
+                    {
+                        num: 3, title: "Consultas Complexas",
+                        topics: ["INNER JOIN", "LEFT/RIGHT JOIN", "Self Join", "GROUP BY", "HAVING", "Subqueries", "Common Table Expressions (CTE)", "Union / Intersect", "Aliasing", "Aggregate Functions (SUM, AVG)"],
+                        practice: ["Relatório de vendas", "Contar pedidos", "Listar sem compras", "Média de preços", "Ranking de clientes"],
+                        projects: ["Engine de Relatórios", "Dashboard Query Suite", "Analisador de Vendas"],
+                        challenges: ["Joins Quádruplos", "CTEs Recursivas", "Performance Query"]
+                    },
+                    {
+                        num: 4, title: "Índices e Performance",
+                        topics: ["B-Tree Indexes", "Unique Indexes", "Full-text Search", "Composite Indexes", "Explain Statement", "Slow Query Log", "Index Cardinality", "Covering Indexes", "Buffer Pool", "Query Cache"],
+                        practice: ["Criar índices", "Analisar Explain", "Otimizar busca", "Medir tempo", "Reduzir full scans"],
+                        projects: ["Optimizer Tool", "Search Engine DB", "Performance Auditor"],
+                        challenges: ["Busca Instantânea", "Otimização de Carga", "Zero Slow Queries"]
+                    },
+                    {
+                        num: 5, title: "Transações e ACID",
+                        topics: ["Atomicity", "Consistency", "Isolation", "Durability", "START TRANSACTION", "COMMIT / ROLLBACK", "Isolation Levels", "Deadlocks", "Locks (Row vs Table)", "Savepoints"],
+                        practice: ["Transferência bancária", "Reserva de estoque", "Tratar Deadlock", "Testar Rollback", "Configurar Isolação"],
+                        projects: ["Sistema Financeiro", "Booking Engine", "Gateway Transacional"],
+                        challenges: ["Integridade 100%", "Concorrência Alta", "Zero Perda de Dados"]
+                    },
+                    {
+                        num: 6, title: "Avançado: Logica no DB",
+                        topics: ["Stored Procedures", "Stored Functions", "Triggers", "Views", "Events (Scheduler)", "Variables in SQL", "Control Flow (IF, CASE)", "Cursors", "Error Handling", "Dynamic SQL"],
+                        practice: ["Trigger de Auditoria", "Procedure de Venda", "View de Relatório", "Event de Limpeza", "Função de Cálculo"],
+                        projects: ["Automated DB Logic", "Auditoria Geral", "Calculadora DB-side"],
+                        challenges: ["Lógica Complexa", "Triggers Eficientes", "Automated Maintenance"]
+                    },
+                    {
+                        num: 7, title: "Segurança e Backup",
+                        topics: ["User Roles & Grants", "SQL Injection Prevention", "Data Encryption at rest", "SSL Connections", "Mysqldump", "Binary Logs", "Point-in-time Recovery", "Replication basics", "Auditing", "Privilege Escalation prevention"],
+                        practice: ["Criar User limitado", "Configurar Backup", "Restaurar DB", "Habilitar Logs", "Testar Injeção"],
+                        projects: ["Backup Automático", "Segurança DB Suite", "Recovery Plan"],
+                        challenges: ["Zero Data Breach", "RPO < 5 min", "Segurança Nível Bancário"]
+                    },
+                    {
+                        num: 8, title: "Eloquent ORM (Laravel)",
+                        topics: ["Active Record pattern", "Models mapping", "Relationships (1:1, 1:N, N:N)", "Eager Loading", "Polymorphic Relationships", "Accessors & Mutators", "Scopes", "Observers", "Collections", "Soft Deletes"],
+                        practice: ["Configurar Eloquent", "Relacionar Usuário/Post", "Otimizar N+1", "Scope de Busca", "Deletar com Soft"],
+                        projects: ["Core de E-commerce Eloquent", "Social Network Graph", "CMS Database Layer"],
+                        challenges: ["Otimização N+1", "Relacionamentos Polimórficos", "Zero SQL manual"]
+                    },
+                    {
+                        num: 9, title: "Migrations e Versionamento",
+                        topics: ["Migrations structure", "Rollback strategy", "Seeders", "Factory definitions", "Schema Builder", "Blueprint", "Version Control for DB", "Testing with Migrations", "Refresh/Reset", "Production migrations"],
+                        practice: ["Criar Migration", "Rodar Seeder", "Rollback de campo", "Gerar Dados Falsos", "Sincronizar Times"],
+                        projects: ["Versioning DB System", "Mock Data Generator", "Migration Suite"],
+                        challenges: ["Zero Downtime Migrations", "Seed 1M Records", "Versioning Perfect"]
+                    },
+                    {
+                        num: 10, title: "Novas Fronteiras e NoSQL",
+                        topics: ["JSON Columns in MySQL", "Spatial Data", "MySQL as Document Store", "High Availability (Cluster)", "Supabase (Postgres)", "Neon (Serverless DB)", "MongoDB Atlas basics", "GraphQL for DB", "Query Builders", "Scaling Strategies"],
+                        practice: ["Usar campo JSON", "Consultar Geo-data", "Configurar Neon", "Integrar Supabase", "Mapear NoSQL"],
+                        projects: ["Hybrid DB App", "Real-time DB Project", "Global Scaling DB"],
+                        challenges: ["Multi-region DB", "JSON Search Power", "Modern Stack DB"]
+                    }
+                ]
+            },
+            infra: {
+                title: "Roadmap — Infraestrutura, DevOps e IA",
+                desc: "A maestria em ambiente, deploy e ferramentas de inteligência.",
+                icon: "fa-solid fa-server text-gray-500",
+                docs: [
+                    { name: "📦 Git & GitHub", url: "https://git-scm.com/doc" },
+                    { name: "🐋 Docker Docs", url: "https://docs.docker.com/" },
+                    { name: "🚀 Vercel", url: "https://vercel.com/docs" },
+                    { name: "☁️ Netlify", url: "https://docs.netlify.com/" },
+                    { name: "🤖 Claude Code", url: "https://docs.anthropic.com/claude/docs/claude-code" },
+                    { name: "🤖 Amazon Q", url: "https://aws.amazon.com/q/" },
+                    { name: "💾 Supabase", url: "https://supabase.com/docs" }
+                ],
+                phases: [
+                    {
+                        num: 1, title: "Versionamento com Git & GitHub",
+                        topics: ["Git Init/Clone", "Add, Commit, Push", "Branches & Merging", "Pull Requests", "Merge Conflicts", "Git Log & Diff", "Git Rebase basics", "Git Stash", "GitHub Flow", "Gitignore"],
+                        practice: ["Criar Repo no GitHub", "Fazer Push de código", "Resolver Conflito de merge", "Abrir Pull Request", "Gerenciar Branches"],
+                        projects: ["Workflow de Time Real", "Repositório Profissional", "Histórico de Projeto Limpo"],
+                        challenges: ["Git Rebase Master", "Zero Conflitos no Time", "Semantic Commits"]
+                    },
+                    {
+                        num: 2, title: "Ambiente Local e Simuladores",
+                        topics: ["Laragon setup", "XAMPP / Wampserver", "Virtual Hosts", "PHP Version Switching", "Local DB Management (HeidiSQL)", "Node.js environment", "Composer setup", "SSL Local (HTTPS)", "Terminal usage", "WSL2 no Windows"],
+                        practice: ["Instalar Laragon/XAMPP", "Configurar VHost custom", "Mudar Versão PHP real", "Gerar SSL Local", "Configurar Terminal"],
+                        projects: ["Local Dev Server Suite", "Multi-version PHP Env", "Custom Local Stack"],
+                        challenges: ["Setup em < 5 min", "Ambiente Mirror Prod", "Local HTTPS funcional"]
+                    },
+                    {
+                        num: 3, title: "Docker e Laradock",
+                        topics: ["Docker Concepts", "Images vs Containers", "Dockerfile", "Docker Compose", "Laradock setup completo", "Volumes & Persistência", "Networking", "Environment Variables", "Build Optimization", "Docker Hub"],
+                        practice: ["Dockerizar App PHP", "Configurar Laradock", "Compose MySQL/Nginx", "Persistir Dados DB", "Expor Portas Seguras"],
+                        projects: ["Stack PHP/MySQL Docker", "Ambiente Laradock Full", "Micro-services Dockerized"],
+                        challenges: ["Build < 1 min", "Image < 100MB", "Docker Prod Ready"]
+                    },
+                    {
+                        num: 4, title: "IDEs e Ferramentas (VS Code/Sublime)",
+                        topics: ["VS Code Advanced", "Sublime Text workflow", "Terminal (Zsh/Powershell)", "CLI Power Tools", "Git Lens & Extensions", "Prettier / ESLint", "Debugger (XDebug) setup", "Remote SSH Development", "Keyboard Shortcuts Master", "Custom Snippets"],
+                        practice: ["Configurar VS Code Arquiteto", "Criar Snippets produtivos", "Configurar XDebug", "Customizar Terminal", "Dominar Atalhos"],
+                        projects: ["Ultimate Dev Environment", "CLI Automation Kit", "IDE Workflow Perfect"],
+                        challenges: ["Zero Mouse Coding", "Automação de IDE", "Workflow Ultra Rápido"]
+                    },
+                    {
+                        num: 5, title: "IA Build CLI (Claude/Amazon Q)",
+                        topics: ["Amazon Q basics", "OpenCode", "Gemini CLI", "Claude Code (Anthropic)", "Codex CLI", "Qodo intro", "Automated Coding", "CLI prompt engineering", "Context awareness", "Error auto-fix"],
+                        practice: ["Gerar código via Claude Code", "Refatorar via Amazon Q", "Corrigir bugs via IA CLI", "Gerar Testes Unitários IA", "Explicar código complexo"],
+                        projects: ["AI-Driven Full Project", "CLI AI Automation Suite", "Self-healing Code App"],
+                        challenges: ["Prompt Engineering Expert", "Zero Manual Boilerplate", "AI Workflow Audit"]
+                    },
+                    {
+                        num: 6, title: "IDEs de IA (Cursor/Windsurf)",
+                        topics: ["Antigravity AI", "Windsurf IDE", "Kiro Editor", "Cursor IDE", "AI Code Completion", "Contextual AI Search", "Auto-refactoring", "AI Pair Programming", "Custom AI Models", "Security in AI IDEs"],
+                        practice: ["Instalar Cursor/Windsurf", "Codar com Antigravity", "Refatoração Inteligente", "Busca Semântica na IDE", "Colaboração com IA"],
+                        projects: ["Modern AI Stack App", "Smart IDE Workflow", "Next-gen Coding Project"],
+                        challenges: ["10x Productivity Boost", "IA Collaboration Flow", "Advanced AI Refactoring"]
+                    },
+                    {
+                        num: 7, title: "Code Design IA (v0/Lovable)",
+                        topics: ["Lovable.dev", "Gemini UI Design", "Bolt.new", "Base44", "Replit Agent", "v0 (Vercel)", "UI Generation", "Prototype to Code", "Component Design IA", "Iterative UI Design"],
+                        practice: ["Gerar UI via v0", "Criar Protótipo no Lovable", "Codar App via Bolt", "Design Iterativo IA", "Exportar para React/HTML"],
+                        projects: ["Instant Premium Landing Page", "UI Kit Suite via IA", "Prototype App 24h"],
+                        challenges: ["Pixel Perfect IA Design", "Customization Expert", "Design-to-Code Mastery"]
+                    },
+                    {
+                        num: 8, title: "Assistentes & Chat IA",
+                        topics: ["Gemini 1.5 Pro", "ChatGPT for Engineers", "z.chat.ia", "AI Studio (Google)", "DeepSeek Coder", "Qwen 2.5", "Advanced Prompting", "Code Auditing IA", "Algorithm solving", "Learning with IA"],
+                        practice: ["Resolver algoritmos complexos", "Auditar Segurança via IA", "Gerar Docs Técnicos", "Explicar Legado sujo", "Traduzir Stacks via IA"],
+                        projects: ["AI Knowledge Base", "Smart Assistant Suite", "Learning Roadmap IA"],
+                        challenges: ["Master AI Prompting", "Code Quality Audit IA", "Advanced Algorithm IA"]
+                    },
+                    {
+                        num: 9, title: "Deploy e Cloud (Vercel/Netlify)",
+                        topics: ["GitHub Pages", "Vercel Deploy Flow", "Netlify Apps", "Railway.app basics", "GitHub Actions Pipelines", "Environment Secrets", "Custom Domains/SSL", "Edge Computing intro", "Serverless Functions", "Zero Downtime Deploy"],
+                        practice: ["Deploy na Vercel via CLI", "Configurar GitHub Pages", "Deploy no Railway", "Criar Pipeline CI/CD", "Setar Domínio e SSL"],
+                        projects: ["Full Stack Cloud App", "Automated Pipeline Site", "Edge Optimized Portfolio"],
+                        challenges: ["Zero Downtime Architecture", "Global Speed Optimization", "Security Hardening Cloud"]
+                    },
+                    {
+                        num: 10, title: "Bancos Cloud (Supabase/Neon)",
+                        topics: ["Supabase (Postgres/Auth)", "Neon DB (Serverless)", "Railway Redis/Postgres", "QuintaDB", "MongoDB Atlas", "Cloud Database Hosting", "Edge Data Replication", "Cloud Backups", "Scalability Strategies", "Database Monitoring"],
+                        practice: ["Conectar no Supabase", "Configurar Neon DB", "Setar MongoDB Atlas", "Backup Cloud Automático", "Migrar DB Local p/ Cloud"],
+                        projects: ["Serverless Cloud Suite", "Global Real-time App", "Modern Cloud Data Hub"],
+                        challenges: ["High Availability DB", "Edge Data Performance", "Cloud Architecture Expert"]
+                    }
+                ]
+            },
+            cursos: {
+                title: "Cursos e Treinamentos Recomendados",
+                desc: "Links diretos para acelerar sua jornada de arquiteto de software.",
+                icon: "fa-solid fa-graduation-cap text-green-500",
+                isLinkList: true,
+                items: [
+                    { name: "Fundamentos PHP 7/8 - EspecializaTi", url: "https://academy.especializati.com.br/curso/fundamentos-programacao-php-7", tag: "Backend" },
+                    { name: "PHP PSRs e Boas Práticas", url: "https://academy.especializati.com.br/curso/php-psrs-boas-praticas", tag: "Arquitetura" },
+                    { name: "Segurança Aplicações Web PHP", url: "https://academy.especializati.com.br/curso/seguranca-aplicacoes-web-com-php", tag: "Segurança" },
+                    { name: "PHP Essencial (Udemy)", url: "https://www.udemy.com/course/php-essencial/", tag: "Iniciante" },
+                    { name: "PHP do Zero a Maestria (Udemy)", url: "https://www.udemy.com/course/php-do-zero-a-maestria-com-projetos-incriveis/", tag: "Completo" },
+                    { name: "Curso Completo de PHP 7 (Udemy)", url: "https://www.udemy.com/course/php-7-completo/", tag: "Completo" },
+                    { name: "Curso PHP 7 Online (Udemy)", url: "https://www.udemy.com/course/curso-php-7-online/", tag: "Completo" },
+                    { name: "Crie um site simples usando HTML, CSS e JS (Fundação Bradesco - EV.G)", url: "https://www.ev.org.br/cursos/crie-um-site-simples-usando-html-css-e-javascript", tag: "Iniciante" },
+                    { name: "Desenvolvimento de Sistemas Web - FGV Educação Executiva", url: "https://educacao-executiva.fgv.br/cursos/online/curta-media-duracao-online/desenvolvimento-de-sistemas-web-css-e-html", tag: "Universitário" },
+                    { name: "Curso completo gratuito para iniciantes (Rocketseat Discover)", url: "https://www.rocketseat.com.br/discover", tag: "Fundamentos" },
+                    { name: "Vários cursos de HTML e CSS (Cursa)", url: "https://cursa.com.br/home/courses?category=html-e-css", tag: "Vários" },
+                    { name: "HTML5 e CSS3 - Curso em Vídeo", url: "https://www.cursoemvideo.com/curso/html5-css3-modulo1/", tag: "Essencial" },
+                    { name: "HTML e CSS para Iniciantes - EAD Education", url: "https://ead.education/course/curso-de-html-e-css-para-iniciantes/", tag: "Iniciante" },
+                    { name: "Introdução ao HTML e CSS - Estudante.dev", url: "https://estudante.dev/curso/introducao-ao-html-e-css/", tag: "Essencial" },
+                    { name: "HTML 5 e CSS 3 - UP Cursos Grátis", url: "https://upcursosgratis.com.br/curso-online-gratis/html-5-e-css-3", tag: "" },
+                    { name: "HTML, CSS e Javascript - Super Cursos", url: "https://supercursos.thinkific.com/courses/curso-gratis-html-css-javascript", tag: "" },
+                    { name: "Desenvolvimento de Sites - Senac SP", url: "https://pt.khanacademy.org/computing/computer-programming/html-css/intro-to-html/pt/html-text-emphasis", tag: "" },
+                    { name: "CS50 Harvard (Estudar Fora)", url: "https://www.estudarfora.org.br/cc50-v2/", tag: "Ciência da Computação" }
+                ]
+            }
+        };
+
+        let currentSection = 'html';
+
+        /**
+         * Inicialização e Gestão de Estado
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            checkLGPD();
+            renderSidebar();
+            loadSection(currentSection);
+        });
+
+        // Toggle Dark Mode
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+
+        function initTheme() {
+            // Verifica localStorage ou preferência do sistema
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                document.documentElement.classList.remove('dark');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+            }
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            if (document.documentElement.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                showToast('Modo Escuro ativado', 'success');
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                showToast('Modo Claro ativado', 'success');
+            }
+        });
+
+        // LGPD Consent
+        function checkLGPD() {
+            if (!localStorage.getItem('lgpd_accepted')) {
+                setTimeout(() => {
+                    const banner = document.getElementById('lgpdBanner');
+                    banner.classList.remove('translate-y-full');
+                }, 1000);
+            }
+        }
+
+        function acceptLGPD() {
+            localStorage.setItem('lgpd_accepted', 'true');
+            const banner = document.getElementById('lgpdBanner');
+            banner.classList.add('translate-y-full');
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Preferências Salvas!',
+                text: 'Cumprimos rigorosamente a LGPD. Seus dados locais estão seguros.',
+                confirmButtonColor: '#3b82f6',
+                background: document.documentElement.classList.contains('dark') ? '#1e293b' : '#fff',
+                color: document.documentElement.classList.contains('dark') ? '#fff' : '#000'
+            });
+        }
+
+        // Render Sidebar Navigation
+        function renderSidebar() {
+            const sidebar = document.getElementById('sidebarMenu');
+            sidebar.innerHTML = '';
+
+            Object.keys(roadmapData).forEach(key => {
+                const item = roadmapData[key];
+                const btn = document.createElement('button');
+                btn.className = `w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${key === currentSection ? 'bg-primary text-white shadow-md' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}`;
+                btn.onclick = () => loadSection(key);
+
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <i class="${item.icon} ${key === currentSection ? 'text-white' : ''} text-lg w-5 text-center"></i>
+                        <span>${key.toUpperCase()}</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-xs opacity-50"></i>
+                `;
+                sidebar.appendChild(btn);
+            });
+        }
+
+        // Load Section Data
+        function loadSection(sectionKey) {
+            currentSection = sectionKey;
+            renderSidebar(); // Update active state
+
+            const data = roadmapData[sectionKey];
+            document.getElementById('trailTitle').innerHTML = `<i class="${data.icon} mr-2"></i> ${data.title}`;
+            document.getElementById('trailDesc').textContent = data.desc;
+
+            const container = document.getElementById('phasesContainer');
+            container.innerHTML = '';
+
+            // Render Documentation Links if available
+            if (data.docs && data.docs.length > 0) {
+                const docsSection = document.createElement('div');
+                docsSection.className = 'mb-8 p-6 bg-white dark:bg-darkCard rounded-xl border-l-4 border-primary shadow-sm glass transition-all hover:shadow-md';
+                docsSection.innerHTML = `
+                    <h4 class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-book-bookmark text-primary"></i> Documentação Oficial e Recursos
+                    </h4>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        ${data.docs.map(doc => `
+                            <a href="${doc.url}" target="_blank" class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors group">
+                                <i class="fa-solid fa-globe text-xs opacity-50 group-hover:opacity-100"></i>
+                                <span class="truncate">${doc.name}</span>
+                            </a>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(docsSection);
+            }
+
+            // Render Links Layout
+            if (data.isLinkList) {
+                const grid = document.createElement('div');
+                grid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4';
+
+                data.items.forEach(curso => {
+                    grid.innerHTML += `
+                        <a href="${curso.url}" target="_blank" rel="noopener noreferrer" 
+                           class="block p-5 bg-white dark:bg-darkCard rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary shadow-sm hover:shadow-md transition-all group">
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 text-xs rounded font-semibold tracking-wide">${curso.tag}</span>
+                                <i class="fa-solid fa-external-link-alt text-gray-400 group-hover:text-primary transition-colors"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">${curso.name}</h3>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 truncate">${curso.url}</p>
+                        </a>
+                    `;
+                });
+                container.appendChild(grid);
+                return;
+            }
+
+            // Render Phases Layout
+            data.phases.forEach((phase, index) => {
+                const animationDelay = index * 50;
+
+                const card = document.createElement('div');
+                card.className = `bg-white dark:bg-darkCard rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden animate-fade-in-up hover:border-primary/30 transition-colors group/card`;
+                card.style.animationDelay = `${animationDelay}ms`;
+                card.style.animationFillMode = 'both';
+
+                card.innerHTML = `
+                    <div class="p-6 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-transparent to-gray-50/50 dark:to-gray-800/20">
+                        <div class="flex items-center gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center border-2 border-primary/20 group-hover/card:border-primary/50 transition-colors">
+                                <span class="text-xl font-extrabold text-primary">${phase.num}</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white group-hover/card:text-primary transition-colors">Fase ${phase.num}: ${phase.title}</h3>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                             <span class="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-bold uppercase tracking-tighter border border-primary/20">Nível Arquiteto</span>
+                             <div class="tooltip cursor-help hidden sm:block">
+                                <i class="fa-solid fa-circle-info text-gray-400 hover:text-primary transition-colors"></i>
+                                <span class="tooltip-text">Complete os desafios antes de prosseguir.</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Tópicos (10 Conceitos) -->
+                        <div>
+                            <h4 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-brain text-blue-500"></i> 10 Conceitos Chave
+                            </h4>
+                            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5">
+                                ${phase.topics.map(t => `<li class="flex items-start gap-2 text-xs text-gray-600 dark:text-gray-400"><i class="fa-solid fa-check text-green-500 mt-1 flex-shrink-0 text-[10px]"></i> <span class="leading-relaxed">${t}</span></li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <!-- Prática (5 Exercícios) -->
+                        <div>
+                            <h4 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-keyboard text-purple-500"></i> 5 Exercícios Práticos
+                            </h4>
+                            <ul class="space-y-3">
+                                ${phase.practice.map(p => `<li class="flex items-start gap-3 text-xs text-gray-600 dark:text-gray-400 p-2 rounded-lg bg-gray-50/50 dark:bg-gray-800/30 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 transition-all"><i class="fa-solid fa-code text-primary/40 mt-1 flex-shrink-0"></i> <span class="leading-relaxed">${p}</span></li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50/80 dark:bg-gray-800/50 p-6 flex flex-col md:flex-row gap-8 justify-between items-start border-t border-gray-100 dark:border-gray-800">
+                        <div class="flex-1 w-full">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">3 Projetos Finais da Fase</span>
+                            <div class="mt-4 flex flex-col gap-2.5">
+                                ${phase.projects.map(proj => `
+                                    <div class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-darkCard border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md hover:scale-[1.01] transition-all cursor-default">
+                                        <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                                            <i class="fa-solid fa-rocket text-primary text-xs"></i>
+                                        </div>
+                                        <span class="text-sm font-bold text-gray-700 dark:text-gray-200">${proj}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="flex-1 w-full md:text-right">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">3 Desafios Extras</span>
+                            <div class="mt-4 flex flex-wrap gap-2 md:justify-end">
+                                ${phase.challenges.map(c => `
+                                    <span class="px-4 py-2 bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400 rounded-xl text-[11px] font-bold border border-red-100 dark:border-red-900/50 flex items-center gap-2 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors cursor-help">
+                                        <i class="fa-solid fa-fire text-[10px]"></i> ${c}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Funcionalidade de Busca (Apenas visual para demonstrar UI responsiva)
+        function searchRoadmap() {
+            const input = document.getElementById('searchInput').value;
+            if (!input) return;
+
+            showToast(`Buscando por: "${input}". (Feature simulada)`, 'info');
+            document.getElementById('searchInput').value = '';
+        }
+
+        // SweetAlert para Ajuda
+        function showHelp() {
+            const isDark = document.documentElement.classList.contains('dark');
+            Swal.fire({
+                title: 'Arquitetura de Aprendizagem',
+                html: `
+                    <div class="text-left text-sm space-y-3 mt-4">
+                        <p><strong>Dev Cria Informa:</strong> Esta plataforma foi desenhada para guiar você do zero ao nível de Arquiteto de Software.</p>
+                        <ul class="list-disc pl-5 space-y-1 text-gray-600 dark:text-gray-300">
+                            <li>Navegue pelas abas na lateral esquerda.</li>
+                            <li>Siga os módulos sequencialmente.</li>
+                            <li>Não avance sem completar os "Desafios Extras".</li>
+                            <li>Consulte a aba de <strong>Cursos</strong> para material de apoio.</li>
+                        </ul>
+                        <p class="mt-4 text-xs italic opacity-70">A interface é construída seguindo rigorosos padrões de UI/UX, pronta para integração com backend PHP 8.</p>
+                    </div>
+                `,
+                icon: 'info',
+                confirmButtonText: 'Bora Codar!',
+                confirmButtonColor: '#3b82f6',
+                background: isDark ? '#1e293b' : '#fff',
+                color: isDark ? '#fff' : '#000'
+            });
+        }
+
+        // Utilidade de Toast
+        function showToast(title, icon) {
+            const isDark = document.documentElement.classList.contains('dark');
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                background: isDark ? '#1e293b' : '#fff',
+                color: isDark ? '#fff' : '#000'
+            });
+
+            Toast.fire({
+                icon: icon,
+                title: title
+            });
+        }
+    </script>
+
+    <!-- Animações CSS Adicionais -->
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 20px, 0);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation-name: fadeInUp;
+            animation-duration: 0.5s;
+        }
+    </style>
+</body>
+
+</html>
